@@ -51,6 +51,9 @@ colors-lamp/
 - Run the ip or the url in an incognito browser: 
 - joshpache.xyz 
 - 45.55.57.68
+- Login with an existing account
+- Search for color in database
+- Add color in database ( if color doesn't exist )
 
 ## Features
 
