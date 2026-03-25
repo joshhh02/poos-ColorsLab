@@ -1,0 +1,31 @@
+@startuml
+title COLORS Lab - Use Case Diagram
+skinparam packageStyle rectangle
+left to right direction
+
+actor User
+
+rectangle "COLORS Lab System" {
+  usecase "Log In" as UC_Login
+  usecase "Validate Session\n(read cookie)" as UC_ValidateSession
+  usecase "Search Colors" as UC_Search
+  usecase "Add Color" as UC_Add
+  usecase "Log Out" as UC_Logout
+
+  usecase "Authenticate Credentials" as UC_Auth
+  usecase "Retrieve Matching Colors" as UC_Retrieve
+  usecase "Insert New Color" as UC_Insert
+}
+
+User --> UC_Login
+User --> UC_Search
+User --> UC_Add
+User --> UC_Logout
+
+UC_Login .> UC_Auth : <<include>>
+UC_Search .> UC_ValidateSession : <<include>>
+UC_Add .> UC_ValidateSession : <<include>>
+UC_Search .> UC_Retrieve : <<include>>
+UC_Add .> UC_Insert : <<include>>
+
+@enduml

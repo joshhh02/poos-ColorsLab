@@ -1,0 +1,79 @@
+@startuml
+title COLORS Lab - Class Diagram
+skinparam classAttributeIconSize 0
+
+package "Frontend" {
+  class "code.js" as FrontendCode <<script>> {
+    - userId : int
+    - firstName : string
+    - lastName : string
+    - urlBase : string
+    - extension : string
+    + doLogin() : void
+    + saveCookie() : void
+    + readCookie() : void
+    + doLogout() : void
+    + searchColor() : void
+    + addColor() : void
+  }
+}
+
+package "API" {
+  class "Login.php" as LoginAPI <<endpoint>> {
+    + getRequestInfo() : array
+    + sendResultInfoAsJson(obj) : void
+    + returnWithError(err) : void
+  }
+
+  class "SearchColors.php" as SearchAPI <<endpoint>> {
+    + getRequestInfo() : array
+    + sendResultInfoAsJson(obj) : void
+    + returnWithError(err) : void
+    + returnWithInfo(searchResults) : void
+  }
+
+  class "addColor.php" as AddColorAPI <<endpoint>> {
+    + getRequestInfo() : array
+    + sendResultInfoAsJson(obj) : void
+    + returnWithError(err) : void
+  }
+
+  class "config.php" as Config <<config>> {
+    + getDbConnection() : mysqli
+    + DB_HOST : string
+    + DB_USER : string
+    + DB_PASS : string
+    + DB_NAME : string
+  }
+}
+
+package "Database" {
+  class Users <<table>> {
+    + ID : int
+    + FirstName : string
+    + LastName : string
+    + Login : string
+    + Password : string
+  }
+
+  class Colors <<table>> {
+    + ID : int
+    + UserID : int
+    + Name : string
+  }
+}
+
+FrontendCode --> LoginAPI : POST /Login.php
+FrontendCode --> SearchAPI : POST /SearchColors.php
+FrontendCode --> AddColorAPI : POST /AddColor.php
+
+LoginAPI ..> Config : uses
+SearchAPI ..> Config : uses
+AddColorAPI ..> Config : uses
+
+SearchAPI --> Colors : SELECT Name
+AddColorAPI --> Colors : INSERT(UserID, Name)
+LoginAPI --> Users : authenticate user
+
+Users "1" <-- "0..*" Colors : owns
+@enduml

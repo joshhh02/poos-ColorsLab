@@ -1,0 +1,69 @@
+@startuml
+COLORS Lab - Activity Diagram
+
+start
+
+:Open index.html;
+:Enter username + password;
+:Click "Do It";
+
+:POST /LAMPAPI/Login.php;
+if (Credentials valid?) then (yes)
+  :Receive userId, firstName, lastName;
+  :Save cookie (20 min);
+  :Redirect to color.html;
+else (no)
+  :Show "User/Password combination incorrect";
+  stop
+endif
+
+:color.html loads;
+:Run readCookie();
+if (Valid userId in cookie?) then (yes)
+  :Stay on color page;
+else (no)
+  :Redirect to index.html;
+  stop
+endif
+
+while (User session active?) is (yes)
+  if (Select action) then (Search color)
+    :Enter search text;
+    :POST /LAMPAPI/SearchColors.php
+    with {search, userId};
+    if (DB connection OK?) then (yes)
+      if (Records found?) then (yes)
+        :Return results[];
+        :Show "Color(s) has been retrieved";
+        :Render color list;
+      else (no)
+        :Return error "No Records Found";
+        :Display empty/failed search state;
+      endif
+    else (no)
+      :Return error "Database connection failed";
+      :Display search error state;
+    endif
+  else (Add color)
+    :Enter color text;
+    :POST /LAMPAPI/AddColor.php
+    with {color, userId};
+    if (DB connection OK?) then (yes)
+      :Insert color for user;
+      :Return success (empty error);
+      :Show "Color has been added";
+    else (no)
+      :Return error "Database connection failed";
+      :Display add error state;
+    endif
+  endif
+
+  if (Click Log Out?) then (yes)
+    :Clear session variables + expire cookie;
+    :Redirect to index.html;
+    break
+  endif
+endwhile (no)
+
+stop
+@enduml
