@@ -1,2 +1,3 @@
 # holds senstitive login info
 config.php
+node_modules/
