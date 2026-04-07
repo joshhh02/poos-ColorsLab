@@ -21,10 +21,10 @@ jobs:
         run: npm install --no-save eslint @eslint/js globals stylelint stylelint-config-standard htmlhint
 
       - name: Lint HTML
-        run: npx htmlhint index.html
+        run: npx htmlhint public/index.html
 
       - name: Lint CSS
         run: npx stylelint "**/*.css"
 
       - name: Lint JS
-        run: npx eslint jss/code.js
+        run: npx eslint public/js/code.js
