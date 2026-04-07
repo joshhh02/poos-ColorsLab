@@ -10,6 +10,7 @@ module.exports = [
       sourceType: "script",
       globals: {
         ...globals.browser,
+        ...globals.node,
         md5: "readonly"
       }
     },
