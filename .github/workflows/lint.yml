@@ -1,0 +1,30 @@
+name: Lint Colors App
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Install linters
+        run: npm install --no-save eslint @eslint/js globals stylelint stylelint-config-standard htmlhint
+
+      - name: Lint HTML
+        run: npx htmlhint --config .github/workflows/.htmlhintrc "public/**/*.html"
+
+      - name: Lint CSS
+        run: npx stylelint --config .github/workflows/stylelint.config.js "public/**/*.css"
+
+      - name: Lint JS
+        run: npx eslint --config .github/workflows/eslint.config.js "public/**/*.js"
