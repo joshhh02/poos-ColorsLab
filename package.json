@@ -1,0 +1,12 @@
+{
+  "name": "poos-colorslab",
+  "version": "1.0.0",
+  "description": "Colors Lab Project",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0"
+  }
+}
